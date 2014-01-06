@@ -1,5 +1,7 @@
-Setup app
-========================
+==========
+Setup Codebender App
+==========
+
 
 1> first change database credential in parameter.yml
 
@@ -21,4 +23,3 @@ Setup app
 5> Created entity class into UserBundle/Entity.
 
     - user entity with 3 attributes: id, username, and registrationDate.
-
