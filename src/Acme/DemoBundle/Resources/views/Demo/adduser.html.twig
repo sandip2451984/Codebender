@@ -1,0 +1,44 @@
+{% extends "AcmeDemoBundle::layout.html.twig" %}
+
+{% block title "Add user" %}
+
+{% block content %}
+    <form action="{{ path('demo_add_user') }}" method="POST" id="user_form">
+        {{ form_errors(form) }}
+
+        {{ form_row(form.username) }}
+
+        {{ form_rest(form) }}
+        <button type="submit">Create</button>
+    </form>
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('demo_list_user') }}">
+                Back to the user list
+            </a>
+        </li>
+    </ul>
+    <div id="result"></div>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script type="text/javascript">
+     $(document).ready(function() {
+         $("form").submit(function(e) {
+             e.preventDefault();
+             var urlPath = '{{ path('demo_add_user') }}';
+             var $data = $(this).serialize();
+             $.ajax({
+                type: "POST",
+                url: urlPath,
+                data: $data
+             }).done(function( result ) {
+                if(result.success) {
+                    $('#result').html('<span style="color:red;">User saved correctly!<br/></span> The data are:<br/><table><tr><td>id: '+ result.id +'</td></tr><tr><td>username: '+ result.username +'</td></tr><tr><td>registration_date: '+ result.registrationdate.date+'</td></tr></table>');
+                }
+             });
+         });
+     });
+     </script>
+
+{% endblock %}

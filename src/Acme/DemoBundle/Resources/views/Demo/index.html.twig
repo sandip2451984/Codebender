@@ -1,0 +1,57 @@
+{% extends "AcmeDemoBundle::layout.html.twig" %}
+
+{% block title "Users list" %}
+
+{% block content_header '' %}
+
+{% block content %}
+
+<a href="{{ path('demo_add_user') }}" style="float: right;">Add user</a>
+    {% if users|length > 0 %}
+        <h1 class="title">Users list</h1>
+        <table tabindex="3"  id="user_data_table">
+            <thead>
+              <tr>
+                  <th><b>User Id</b></th>
+                  <th><b>User Name</b></th>
+                  <th><b>Registration date</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                      <td><a href="javascript:;" onClick="return performUserView('{{ user.id }}');">{{ user.id }}</a></td>
+                      <td>{{ user.username }}</td>
+                      <td>{{ user.registrationDate.date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert-message">
+            Sorry, no records found!
+        </div>
+    {% endif %}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function performUserView(userId)
+        {
+            var urlPath = '{{ path('demo_view_user') }}';
+            var data = "userid=" + userId;
+            $.ajax({
+                type: "GET",
+                url: urlPath,
+                data: data
+            }).done(function( result ) {
+                if(result.success) {
+                    console.log(result.registrationdate);
+                    $('#user_data_table').html('<table width="100%"><thead><th>User Id</th><th>User Name</th><th>Registration date</th></thead><tbody><tr><td>'+ result.id +'</td><td>'+ result.username +'</td><td>'+ result.registrationdate.date+'</td></tr></tbody></table>');
+                } else {
+                    $('#user_data_table').html('<div class="alert-message">Sorry, no records found!</div>');
+                }
+            });
+        }
+     </script>
+
+{% endblock %}
